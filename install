@@ -1,0 +1,34 @@
+#!/bin/bash
+
+VERSION=0.0.0
+
+help() {
+  echo "Usage:"
+  echo "  zmicro package install vnc-server <args...>"
+  echo ""
+}
+
+install() {
+  zmicro fn pm update -y \
+    && zmicro fn pm install -y tightvncserver
+}
+
+core() {
+  if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+    help
+    exit 0
+  fi
+
+  install
+  if [ "$?" != "0" ]; then
+    log::error "failed to install vnc-server."
+  else
+    log::success "install vnc-server success."
+  fi
+}
+
+run() {
+  core $@
+}
+
+run $@
